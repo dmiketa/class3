@@ -1,0 +1,156 @@
+<!doctype html>
+
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Class 3</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/vn/trunk/html5.js"></script>
+  <![endif]-->
+<link rel="stylesheet" href="css/style.css?v=1.0">
+ 
+</head>
+
+<body>
+
+<h1>Decent Coffee Around New York City</h1>
+
+<div class="square">
+There are plenty of coffee shops in New York City. <br/>
+But it can be pretty overwhelming to find a good one. <br/>
+Here are my recommendations that may or may not be helpful.
+</div>
+<p>Click to pan to the following areas:<br/>
+<button id=NYU class="button">Manhattan</button>
+<button id=BK class="button">Brooklyn</button>
+<button id=QN class="button">Queens</button>
+</p>
+
+<div id="map"></div>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+ 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  	<script type="text/javascript">
+
+// leaflet information:
+
+var map = L.map('map').setView([40.730982,-73.997340], 13);
+
+var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',{
+		 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+		});
+
+map.addLayer(layer)
+
+
+
+var mymappoints =[
+	{name: "<b>Think Coffee</b>",
+		coord:[40.728357,-73.995299],
+		add: " <br/> 248 Mercer  St",
+		deets: "<br/> Favorite place around NYU to do work, although it can get pretty crowded",
+		site: "<br/> <a href ='http://www.thinkcoffee.com'>Website</a>",
+	},
+	{name: "<b>Third Rail Coffee</b>",
+		coord:[40.729916,-73.999625],
+		add: "<br/> 240 Sullivan St",
+		deets: "<br/> A favorite for the NYU Furman Center",
+		site: "<br/><a href ='http://www.thirdrailcoffee.com'>Website</a>",
+	},
+	{name: "<b>Stumptown</b>",
+		coord:[40.732789,-73.997981],
+		add: "<br/> 30 West 8th St",
+		deets: "<br/> You usually can't find a spot to sit",
+		site: "<br/><a href ='https://www.stumptowncoffee.com'>Website</a>",
+	},
+	{name: "<b>Kopi Kopi</b>",
+		coord: [40.729377,-73.998261],
+		add: "<br/> 68 West 3rd St",
+		deets: "<br/> I actually wouldn't recommend this place. I saw the largest cockroach ever crawling on the wall once",
+		site: "<br/><a href ='http://www.kopinyc.com'>Website</a>",
+	},
+	{name: "<b>Two Hands</b>",
+		coord: [40.719686,-73.996032],
+		add: "<br/> 164 Mott St",
+		deets: "<br/> Probably worth going here just for the Tim Tam Slam",
+		site: "<br/><a href ='http://www.twohandsnyc.com/'>Website</a>",
+	},
+	{name: "<b>Mudspot</b>",
+		coord: [40.729061,-73.986681],
+		add: "<br/> 307 East 9th St",
+		deets: "<br/> Can't go wrong with their regular MUD coffee",
+		site: "<br/><a href ='http://www.mudnyc.com/'>Website</a>",
+	},
+	{name: "<b>Sit and Wonder</b>",
+		coord:[40.677351,-73.963946],
+		add: "<br/> 688 Washington Ave",
+		deets: "<br/> Cute little coffee shop with a cozy back yard that is great during the summer",
+		site: "<br/><a href ='http://sitandwonder.org'>Website</a>",
+	},
+	{name: "<b>Daily Press</b>",
+		coord: [40.681482,-73.955593],
+		add: "<br/> 505 Franklin Ave",
+		deets: "<br/> Conveniently located next to the subway stop",
+		site: "<br/><a href ='http://www.dailypresscoffee.com'>Website</a>",
+	},
+	{name: "<b>Postmark Cafe</b>",
+		coord:[40.671112,-73.985324],
+		add: "<br/> 326 6th St",
+		deets: "<br/> Cozy and warm cafe. As one yelp reviewer commented that there is no elite hipster douchbaggery at this cafe",
+		site: "<br/><a href ='https://www.facebook.com/Postmark-Cafe-63303771194/'>Website</a>",
+	},
+	{name: "<b>Lazy Ibis</b>",
+		coord:[40.675748,-73.956002],
+		add: "<br/> 663 Franklin Ave",
+		deets: "<br/> My roommate loves their coffee",
+		site: "<br/><a href ='http://www.lazyibisnyc.com'>Website</a>",
+	},
+	{name: "<b>COFFEED</b>",
+		coord:[40.751931,-73.925619],
+		add: "<br/> 37-18 Northern Blvd",
+		deets: "<br/> Not sure if this is good or not. I just wanted to include a place in Queens",
+		site: "<br/><a href ='http://www.coffeednyc.com/lic-flagship/'>Website</a>",
+	}
+	]
+
+
+mymappoints.forEach(function(element){
+	var marker = L.marker(element.coord).addTo(map);
+
+	 marker.bindPopup(element.name + element.add + element.deets + element.site)
+});
+
+
+  var panOptions = {
+    animate: true,
+    duration: 2
+  }
+
+  var nyupan = [40.730982,-73.997340];
+  var brooklynpan = [40.674064,-73.970089];
+  var queenspan = [40.752264,-73.923826];
+
+
+  $(".button").click(function() {
+      if($(this).attr('id') == 'NYU' ) {
+        map.panTo(nyupan, panOptions);
+      } 
+      if($(this).attr('id') == 'BK' ) {
+      	map.panTo(brooklynpan, panOptions);
+      }
+      if($(this).attr('id') == 'QN' ) {
+        map.panTo(queenspan, panOptions);
+       }
+   });
+      
+
+</script>
+</body>
+</html>
